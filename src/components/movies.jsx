@@ -1,10 +1,24 @@
 import React, { Component } from 'react';
+import MoviesTable from "./moviesTable"
+import Pagination from "./common/pagination"
+import ListGroup from "./common/listGroup"
 import { getMovies } from "../services/fakeMovieService";
+import { paginate } from '../utils/paginate';
+import { getGenres } from '../services/fakeGenreService';
+import _ from 'lodash';
 
 class Movies extends Component {
   state = { 
-    movies: getMovies(),
-    like: false
+    movies: [],
+    genres: [],
+    currentPage: 1,
+    pageSize: 4,
+    sortColumn: { path: 'title', order: 'asc' }
+   };
+
+  componentDidMount() {
+    const genres = [{ _id: "", name: 'All Genres'}, ...getGenres()];
+     this.setState({ movies: getMovies(), genres });
    };
 
   handleDelete = movie => {
@@ -13,45 +27,80 @@ class Movies extends Component {
    };
 
   handleLike = movie => {
-    const 
+    //we have to clone out array of movies, as we dont want to modify those objects directly
+    const movies = [...this.state.movies];
+    //we neet to find index of that object (that we want to modify-like)
+    const index = movies.indexOf(movie);
+    //here we go to moveis of index and set this to a new object, we clone it with spread operator
+    movies[index] = { ...movies[index]};
+    //now we change the liked property - we toggle it
+    movies[index].liked = !movies[index].liked;
+    //we call setState and pass a new movies array
+    this.setState({ movies });
+    };
+
+  handlePageChange = page => {
+    this.setState({ currentPage : page});
   }
+
+  handleGenreSelect = genre => {
+    this.setState( {selectedGenre: genre, currentPage: 1 } );
+  };
+
+  handleSort = sortColumn => {
+    //we update the state based on this new sortColumn object
+    this.setState({ sortColumn });
+  };
+
+  //all the logic for aplying sorting, filtering, pagination is encapsulated in this method
+  getPagedData = () => {
+    const filtered = this.state.selectedGenre && this.state.selectedGenre._id 
+      ? this.state.movies.filter(m => m.genre._id === this.state.selectedGenre._id) 
+      : this.state.movies;
+
+    const sorted = _.orderBy(filtered, [this.state.sortColumn.path], [this.state.sortColumn.order]);
+    const movies = paginate(sorted, this.state.currentPage, this.state.pageSize);
+
+    return { totalCount: filtered.length, data: movies };
+  }
+  
   render() { 
     const { length: count } = this.state.movies;
-    if (count === 0) 
-      return <p>There are no movies in the database.</p>;
+    //with line below we can extract this.state from Pagination component down below(from pageSize and currentPage)...
+    // const { pageSize, currentPage } = this.state;
+    if (count === 0) return <p>There are no movies in the database.</p>;
+
+    const { totalCount, data: movies } = this.getPagedData();
 
     return (
-      <React.Fragment>
-        <p>Showing {count} movies in the database. </p> 
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Genre</th>
-              <th>Stock</th>
-              <th>Rate</th>
-              <th></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.state.movies.map(movie => (
-              <tr key={movie._id}>
-                <td>{movie.title}</td>
-                <td>{movie.genre.name}</td>
-                <td>{movie.numberInStock}</td>
-                <td>{movie.dailyRentalRate}</td>
-                <td><button onClick={() => this.props.handleLike(this.props.movie)}
-              
-              liked={(this.state.like === false ? 'NoLike' : "YesLike")}
-            >-
-            </button></td>
-                <td><button onClick={() => this.handleDelete(movie)} className="btn btn-danger btn-sm">Delete</button></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </React.Fragment>
+      <div className="row">
+      <div className="col-3">
+        <ListGroup 
+          items={this.state.genres} 
+          //we no longer need these lines below as we set defaultProps in listGroup file
+          // textProperty= "name"
+          // valueProperty="_id"
+          selectedItem={this.state.selectedGenre}
+          onItemSelect={this.handleGenreSelect} 
+        />
+      </div>
+      <div className="col">
+        <p>Showing {totalCount} movies in the database. </p>
+          <MoviesTable 
+            movies={movies} 
+            sortColumn={this.state.sortColumn}
+            onLike={this.handleLike} 
+            onDelete={this.handleDelete}
+            onSort={this.handleSort} 
+          />
+          <Pagination 
+            itemsCount={totalCount} 
+            pageSize={this.state.pageSize}
+            currentPage={this.state.currentPage}
+            onPageChange={this.handlePageChange} 
+          />
+        </div>
+      </div>
      );
   }
 }
