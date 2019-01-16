@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import MoviesTable from "./moviesTable"
-import Pagination from "./common/pagination"
-import ListGroup from "./common/listGroup"
+import MoviesTable from "./moviesTable";
+import Pagination from "./common/pagination";
+import ListGroup from "./common/listGroup";
 import { getMovies } from "../services/fakeMovieService";
 import { paginate } from '../utils/paginate';
 import { getGenres } from '../services/fakeGenreService';
@@ -74,18 +74,18 @@ class Movies extends Component {
 
     return (
       <div className="row">
-      <div className="col-3">
-        <ListGroup 
-          items={this.state.genres} 
-          //we no longer need these lines below as we set defaultProps in listGroup file
-          // textProperty= "name"
-          // valueProperty="_id"
-          selectedItem={this.state.selectedGenre}
-          onItemSelect={this.handleGenreSelect} 
-        />
-      </div>
-      <div className="col">
-        <p>Showing {totalCount} movies in the database. </p>
+        <div className="col-3">
+          <ListGroup 
+            items={this.state.genres} 
+            //we no longer need these lines below as we set defaultProps in listGroup file
+            // textProperty= "name"
+            // valueProperty="_id"
+            selectedItem={this.state.selectedGenre}
+            onItemSelect={this.handleGenreSelect} 
+          />
+        </div>
+        <div className="col">
+          <p>Showing {totalCount} movies in the database. </p>
           <MoviesTable 
             movies={movies} 
             sortColumn={this.state.sortColumn}
@@ -101,7 +101,7 @@ class Movies extends Component {
           />
         </div>
       </div>
-     );
+    );
   }
 }
  
