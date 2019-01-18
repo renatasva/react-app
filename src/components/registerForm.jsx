@@ -1,8 +1,10 @@
 import React from 'react';
 import Joi from 'joi-browser';
 import Form from './common/form';
+//below, this way we have userService object in registerForm module and all functions that we exported from userService will be methods of userService object
+import * as userService from '../services/userService';
 
-class LoginForm extends Form {
+class RegisterForm extends Form {
   state = {
     data: { username: '', password: '', name: '' },
     errors: {}
@@ -14,9 +16,21 @@ class LoginForm extends Form {
     name: Joi.string().required().label('Name')
   };
   
-  doSubmit = () => {
+  doSubmit = async () => {
     //call the server
-        console.log('Submitted');
+    try {
+      //line below returns a promise
+      const response = await userService.register(this.state.data);
+      localStorage.setItem('token', response.headers['x-auth-token']);
+      this.props.history.push('/');
+    }
+    catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        const errors = { ...this.state.errors };
+        errors.username = ex.response.data;
+        this.setState({ errors });
+      }
+    }
   }
   
   render() { 
@@ -34,4 +48,4 @@ class LoginForm extends Form {
   }
 }
  
-export default LoginForm;
+export default RegisterForm;
