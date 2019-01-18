@@ -3,6 +3,7 @@ import Joi from 'joi-browser';
 import Form from './common/form';
 //below, this way we have userService object in registerForm module and all functions that we exported from userService will be methods of userService object
 import * as userService from '../services/userService';
+import auth from '../services/authService';
 
 class RegisterForm extends Form {
   state = {
@@ -21,8 +22,8 @@ class RegisterForm extends Form {
     try {
       //line below returns a promise
       const response = await userService.register(this.state.data);
-      localStorage.setItem('token', response.headers['x-auth-token']);
-      this.props.history.push('/');
+      auth.loginWithJwt(response.headers['x-auth-token']);
+      window.location = '/';
     }
     catch (ex) {
       if (ex.response && ex.response.status === 400) {

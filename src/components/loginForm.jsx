@@ -1,7 +1,7 @@
 import React from 'react';
 import Joi from 'joi-browser';
 import Form from './common/form';
-import { login } from '../services/authService';
+import auth from '../services/authService';
 
 class LoginForm extends Form {
   state = {
@@ -22,12 +22,9 @@ class LoginForm extends Form {
     try {
       const { data } = this.state;
       //we getting the 'json web token' in the body of a response
-      const { data: jwt } = await login(data.username, data.password);
-      //we access the local storage object
-      localStorage.setItem('token', jwt);
-      //when we implement routing, props object that we have here will have an additional property - history - it represents browser history
-      //here we can call a push method to navigate a user to different address(homepage)
-      this.props.history.push("/");
+      await auth.login(data.username, data.password);  
+      //line below will cause full reload of application
+      window.location = '/';
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };
