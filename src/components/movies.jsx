@@ -11,7 +11,7 @@ import SearchBox from "./searchBox";
 import _ from 'lodash';
 
 class Movies extends Component {
-  state = { 
+  state = {
     movies: [],
     genres: [],
     currentPage: 1,
@@ -30,7 +30,7 @@ class Movies extends Component {
    };
 
   handleDelete = async movie => {
-    const originalMovies = this.state.movies; 
+    const originalMovies = this.state.movies;
     const movies = originalMovies.filter(m => m._id !== movie._id);
     this.setState({ movies });
 
@@ -99,11 +99,13 @@ class Movies extends Component {
 
     return { totalCount: filtered.length, data: movies };
   }
-  
-  render() { 
+
+  render() {
     const { length: count } = this.state.movies;
     //with line below we can extract this.state from Pagination component down below(from pageSize and currentPage)...
     // const { pageSize, currentPage } = this.state;
+    const { user } = this.props;
+
     if (count === 0) return <p>There are no movies in the database.</p>;
 
     const { totalCount, data: movies } = this.getPagedData();
@@ -111,43 +113,45 @@ class Movies extends Component {
     return (
       <div className="row">
         <div className="col-3">
-          <ListGroup 
-            items={this.state.genres} 
+          <ListGroup
+            items={this.state.genres}
             //we no longer need these lines below as we set defaultProps in listGroup file
             // textProperty= "name"
             // valueProperty="_id"
             selectedItem={this.state.selectedGenre}
-            onItemSelect={this.handleGenreSelect} 
+            onItemSelect={this.handleGenreSelect}
           />
         </div>
         <div className="col">
-          <Link
-            to="/movies/new"
-            className="btn btn-primary"
-            style={{ marginBottom: 20 }} 
-          >
-            New Movie
-          </Link>
+          {user && (
+            <Link
+              to="/movies/new"
+              className="btn btn-primary"
+              style={{ marginBottom: 20 }}
+            >
+              New Movie
+            </Link>
+          )}
           <p>Showing {totalCount} movies in the database. </p>
           <SearchBox value={this.searchQuery} onChange={this.handleSearch} />
-          <MoviesTable 
-            movies={movies} 
+          <MoviesTable
+            movies={movies}
             sortColumn={this.state.sortColumn}
-            onLike={this.handleLike} 
+            onLike={this.handleLike}
             onDelete={this.handleDelete}
-            onSort={this.handleSort} 
+            onSort={this.handleSort}
           />
-          <Pagination 
-            itemsCount={totalCount} 
+          <Pagination
+            itemsCount={totalCount}
             pageSize={this.state.pageSize}
             currentPage={this.state.currentPage}
-            onPageChange={this.handlePageChange} 
+            onPageChange={this.handlePageChange}
           />
         </div>
       </div>
     );
   }
 }
- 
+
 export default Movies;
 

@@ -9,6 +9,7 @@ import Rentals from "./components/rentals";
 import NotFound from "./components/notFound";
 import LoginForm from "./components/loginForm";
 import Logout from "./components/logout";
+import ProtectedRoute from "./components/common/protectedRoute.jsx";
 import auth from './services/authService';
 import RegisterForm from "./components/registerForm";
 import 'react-toastify/dist/ReactToastify.css';
@@ -31,8 +32,12 @@ class App extends Component {
             <Route path="/register" component={RegisterForm} />
             <Route path="/login" component={LoginForm} />
             <Route path="/logout" component={Logout} />
-            <Route path="/movies/:id" component={MovieForm} />
-            <Route path="/movies" component={Movies} />
+            <ProtectedRoute path="/movies/:id" component={MovieForm} />
+            //in order to pass additional props to Movies component we need to use 'render' atribute
+            <Route
+              path="/movies"
+              render={props => <Movies {...props} user={this.state.user} />}
+            />
             <Route path="/customers" component={Customers} />
             <Route path="/rentals" component={Rentals} />
             <Route path="/not-found" component={NotFound} />
