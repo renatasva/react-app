@@ -10,10 +10,10 @@ class MoviesTable extends Component {
       path: 'title',
       label: 'Title',
       //below, in 'to' we pass a template literal in a back-ticks - we use them to dynamicaly insert values into a string.
-      content: movie => <Link to={`/movies/${movie._id}`}>{movie.title}</Link> },
-    { path: 'genre.name', label: 'Genre' },
-    { path: 'numberInStock', label: 'Stock' },
-    { path: 'dailyRentalRate', label: 'Rate' },
+      content: movie => <Link className="link-to" to={`/holidays/${movie._id}`}>{movie.title}</Link> },
+    { path: 'genre.name', label: 'Holiday Type' },
+    { path: 'numberInStock', label: 'Duration (nights)' },
+    { path: 'dailyRentalRate', label: 'Price (£, pp)' },
     { key: "like",
       content: movie => <Like liked={movie.liked} onClick={() => this.props.onLike(movie)} />}
   ];
@@ -23,7 +23,7 @@ class MoviesTable extends Component {
     content: movie => (
       <button
         onClick={() => this.props.onDelete(movie)}
-        className="btn btn-danger btn-sm"
+        className="btn btn-danger btn-sm button-delete"
       >
         Delete
       </button>

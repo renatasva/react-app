@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Sarabun:400,700');
+
 body {
   margin: 0;
   padding: 0 0 0 0;
@@ -12,11 +14,50 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
-.navbar {
-  margin-bottom: 30px;
-}
-
 .clickable {
   cursor: pointer;
+}
+.row {
+  margin: 0 !important;
+}
+#logo-title {
+  font-size: 23px;
+  font-family: 'Sarabun', sans-serif;
+}
+.img-slider {
+  margin-bottom: 30px;
+}
+.button-new {
+  background: #1F7299 !important;
+  border-color: #1F7299 !important;
+}
+.button-delete {
+  background: #E57833 !important;
+  border-color: #E57833 !important;
+}
+.pagination > .active > a
+{
+    color: white;
+    background-color: #1F7299 !important;
+    border: solid 1px #1F7299 !important;
+}
+
+.pagination > .active > a:hover
+{
+    background-color: #1F7299 !important;
+    border: solid 1px #1F7299 !important;
+}
+.list-group > .active
+{
+    color: white;
+    background-color: #1F7299 !important;
+    border: solid 1px #1F7299 !important;
+}
+.list-group > .active:hover
+{
+    background-color: #1F7299 !important;
+    border: solid 1px #1F7299 !important;
+}
+.link-to {
+  color: #1F7299 !important;
 }

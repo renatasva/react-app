@@ -14,6 +14,7 @@ import auth from './services/authService';
 import RegisterForm from "./components/registerForm";
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
+
 class App extends Component {
   state = {};
 
@@ -32,16 +33,16 @@ class App extends Component {
             <Route path="/register" component={RegisterForm} />
             <Route path="/login" component={LoginForm} />
             <Route path="/logout" component={Logout} />
-            <ProtectedRoute path="/movies/:id" component={MovieForm} />
+            <ProtectedRoute path="/holidays/:id" component={MovieForm} />
             //in order to pass additional props to Movies component we need to use 'render' atribute
             <Route
-              path="/movies"
+              path="/holidays"
               render={props => <Movies {...props} user={this.state.user} />}
             />
             <Route path="/customers" component={Customers} />
             <Route path="/rentals" component={Rentals} />
             <Route path="/not-found" component={NotFound} />
-            <Redirect from="/" exact to="/movies" />
+            <Redirect from="/" exact to="/holidays" />
             <Redirect to="/not-found" />
           </Switch>
         </div>

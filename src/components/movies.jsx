@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { toast } from 'react-toastify';
 import MoviesTable from "./moviesTable";
+import ImageCarousel from "./imageCarousel";
 import Pagination from "./common/pagination";
 import ListGroup from "./common/listGroup";
 import { getMovies, deleteMovie } from "../services/movieService";
@@ -23,7 +24,7 @@ class Movies extends Component {
 
   async componentDidMount() {
     const { data } = await getGenres();
-    const genres = [{ _id: "", name: 'All Genres'}, ...data];
+    const genres = [{ _id: "", name: 'All Types'}, ...data];
 
     const { data: movies } =  await getMovies();
     this.setState({ movies, genres });
@@ -39,7 +40,7 @@ class Movies extends Component {
     }
     catch (ex) {
       if (ex.response && ex.response.status === 404)
-        toast.error('This movie has already been deleted.');
+        toast.error('This package has already been deleted.');
 
         this.setState({ movies: originalMovies });
     }
@@ -106,11 +107,17 @@ class Movies extends Component {
     // const { pageSize, currentPage } = this.state;
     const { user } = this.props;
 
-    if (count === 0) return <p>There are no movies in the database.</p>;
+    if (count === 0) return <p>There are no holiday packages in the database.</p>;
 
     const { totalCount, data: movies } = this.getPagedData();
 
     return (
+      <React.Fragment>
+      <div className="row">
+        <center>
+          <ImageCarousel />
+        </center>
+      </div>
       <div className="row">
         <div className="col-3">
           <ListGroup
@@ -125,14 +132,14 @@ class Movies extends Component {
         <div className="col">
           {user && (
             <Link
-              to="/movies/new"
-              className="btn btn-primary"
+              to="/holidays/new"
+              className="btn btn-primary button-new"
               style={{ marginBottom: 20 }}
             >
-              New Movie
+              New Holiday Package
             </Link>
           )}
-          <p>Showing {totalCount} movies in the database. </p>
+          <p>Showing {totalCount} holiday packages. </p>
           <SearchBox value={this.searchQuery} onChange={this.handleSearch} />
           <MoviesTable
             movies={movies}
@@ -149,6 +156,7 @@ class Movies extends Component {
           />
         </div>
       </div>
+      </React.Fragment>
     );
   }
 }
