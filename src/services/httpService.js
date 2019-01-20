@@ -3,6 +3,8 @@ import logger from "./logService";
 //importing toast object, not component like in App.js
 import { toast } from 'react-toastify';
 
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+
 //interceptor - thing that stops or catches something (success or error) going from one place to another.
 //in axios we can incercept our requests and responses and
 //if we have a response with an unexpected error we can handle that error in one place

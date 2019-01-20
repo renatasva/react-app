@@ -107,7 +107,7 @@ class Movies extends Component {
     // const { pageSize, currentPage } = this.state;
     const { user } = this.props;
 
-    if (count === 0) return <p>There are no holiday packages in the database.</p>;
+    // if (count === 0) return <p>There are no holiday packages in the database.</p>;
 
     const { totalCount, data: movies } = this.getPagedData();
 
