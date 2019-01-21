@@ -6,16 +6,16 @@ import { getGenres } from '../services/genreService';
 
 class MovieForm extends Form {
   state = {
-    data: { 
-      title: '', 
-      genreId: '', 
-      numberInStock: '', 
-      dailyRentalRate: '' 
+    data: {
+      title: '',
+      genreId: '',
+      numberInStock: '',
+      dailyRentalRate: ''
     },
     genres: [],
     errors: {}
   };
- 
+
   schema = {
     _id: Joi.string(),
     title: Joi.string()
@@ -23,19 +23,19 @@ class MovieForm extends Form {
       .label('Title'),
     genreId: Joi.string()
       .required()
-      .label('Genre'),
+      .label('Type'),
     numberInStock: Joi.number()
       .required()
       .min(0)
       .max(100)
-      .label('Number in Stock'),
+      .label('Duration (nights)'),
     dailyRentalRate: Joi.number()
       .required()
       .min(0)
-      .max(10)
-      .label('Daily Rental Rate')
+      .max(5000)
+      .label('Price (£, pp)')
   };
-  
+
   async populateGenres() {
     const {data: genres } = await getGenres();
     this.setState({ genres });
@@ -75,34 +75,34 @@ class MovieForm extends Form {
     //call the server
     await saveMovie(this.state.data);
 
-    this.props.history.push("/movies");
+    this.props.history.push("/holidays");
   };
-  
-  render() { 
+
+  render() {
     return  (
     <div className="m-5">
-    	<h1>Movie From</h1>
+    	<h2>New Holiday Package</h2>
       <form onSubmit={this.handleSubmit}>
         {this.renderInput('title', 'Title')}
-        {this.renderSelect('genreId', 'Genre', this.state.genres)}
-        {this.renderInput('numberInStock', 'Number in Stock', 'number')}
-        {this.renderInput('dailyRentalRate', 'Rate')}
+        {this.renderSelect('genreId', 'Type', this.state.genres)}
+        {this.renderInput('numberInStock', 'Duration (nights)', 'number')}
+        {this.renderInput('dailyRentalRate', 'Price (£, pp)')}
         {this.renderButton('Save')}
       </form>
-    </div> 
+    </div>
     );
   }
 }
- 
+
 export default MovieForm;
 
 // const MovieForm = ({ match, history }) => {
-//   return ( 
+//   return (
 //     <div>
 //       <h1>Movie Form {match.params.id} </h1>
 //       <button className="btn btn-primary" onClick={() => history.push('/movies')}>Save</button>
 //     </div>
 //    );
 // }
- 
+
 // export default MovieForm;

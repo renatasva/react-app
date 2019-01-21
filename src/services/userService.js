@@ -1,7 +1,6 @@
 import http from './httpService';
-import { apiUrl } from '../config.json';
 
-const apiEndpoint = apiUrl + "/users";
+const apiEndpoint = "/users";
 
 export function register(user) {
   //we send http request to the server and return a promise
@@ -9,5 +8,5 @@ export function register(user) {
     email: user.username,
     password: user.password,
     name: user.name
-  }) 
+  })
 }

@@ -1,38 +1,38 @@
 import React from 'react';
+import logo from '../images/logo.png';
 import { NavLink, Link } from 'react-router-dom';
 
 const NavBar = ({ user }) => {
-  return ( 
-    <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
-      <Link className="navbar-brand" to="/">
-        Vidly
-      </Link>
-      <button 
-        className="navbar-toggler" 
-        type="button" 
-        data-toggle="collapse" 
-        data-target="#navbarNavAltMarkup" 
-        aria-controls="navbarNavAltMarkup" 
-        aria-expanded="false" 
-        aria-label="Toggle navigation"
-      >
-      <span className="navbar-toggler-icon"/>
-      </button>
-      <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div className="navbar-nav">
-          <NavLink className="nav-item nav-link" to="/movies">
-            Movies
+  return (
+    <nav className="navbar navbar-expand-md navbar-light ">
+      <div className="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+        <div className="navbar-nav mr-auto">
+          <NavLink className="nav-item nav-link" to="/holidays">
+            Holiday packages
           </NavLink>
           <NavLink className="nav-item nav-link" to="/customers">
-            Customers
+            Destinations
           </NavLink>
           <NavLink className="nav-item nav-link" to="/rentals">
-            Rentals
+            Discover more
           </NavLink>
+        </div>
+      </div>
+      <div className="mx-auto order-0">
+        <Link className="navbar-brand mx-auto" id="logo-title" to="/">
+          <img src={logo} height="33" width="33"/>
+          holideo
+        </Link>
+        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+            <span className="navbar-toggler-icon"></span>
+        </button>
+      </div>
+      <div className="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <div className="navbar-nav ml-auto">
           {!user && (
             <React.Fragment>
               <NavLink className="nav-item nav-link" to="/login">
-                Login
+                <i className="fa fa-sign-in"></i> Login
               </NavLink>
               <NavLink className="nav-item nav-link" to="/register">
                 Register
@@ -42,7 +42,7 @@ const NavBar = ({ user }) => {
           {user && (
             <React.Fragment>
               <NavLink className="nav-item nav-link" to="/profile">
-                {user.name}
+                <i className="fa fa-user"></i> {user.name}
               </NavLink>
               <NavLink className="nav-item nav-link" to="/logout">
                 Logout
@@ -54,18 +54,5 @@ const NavBar = ({ user }) => {
     </nav>
    );
 };
- 
+
 export default NavBar;
-
-
-// <ul>
-//       <li>
-//         <Link to="/movies">Movies</Link>
-//       </li>
-//       <li>
-//         <Link to="/customers">Customers</Link>
-//       </li>
-//       <li>
-//         <Link to="/rentals">Rentals</Link>
-//       </li>
-//     </ul>
